@@ -38,7 +38,7 @@ python3 -u main_LKG.py \
 --finetune-t \
 --finetune-B \
 --B 10e3 \
---epochs 18 \
+--epochs 20 \
 --workers 4 \
 --max-to-keep 5 "$@"
 
