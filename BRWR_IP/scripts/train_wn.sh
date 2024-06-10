@@ -14,27 +14,27 @@ fi
 if [ -z "$DATA_DIR" ]; then
   DATA_DIR="${DIR}/data/${TASK}"
 fi
-
+# microsoft/deberta-large
 python3 -u main_LKG.py \
 --model-dir "${OUTPUT_DIR}" \
---pretrained-model microsoft/deberta-large \
+--pretrained-model bert-base-uncased \
 --pooling mean \
 --lr 5e-5 \
 --use-link-graph \
 --train-path "${DATA_DIR}/train.txt.json" \
 --valid-path "${DATA_DIR}/valid.txt.json" \
---train-path-dict "${DATA_DIR}/train_antithetical_40_400.pkl" \
---valid-path-dict "${DATA_DIR}/valid_antithetical_40_400.pkl" \
---shortest-path "${DATA_DIR}/ShortestPath_antithetical_40_400.pkl" \
---degree-train "${DATA_DIR}/Degree_train_antithetical_40_400.pkl" \
---degree-valid "${DATA_DIR}/Degree_valid_antithetical_40_400.pkl"  \
+--train-path-dict "${DATA_DIR}/train_antithetical_50_400.pkl" \
+--valid-path-dict "${DATA_DIR}/valid_antithetical_50_400.pkl" \
+--shortest-path "${DATA_DIR}/ShortestPath_antithetical_50_400.pkl" \
+--degree-train "${DATA_DIR}/Degree_train_antithetical_50_400.pkl" \
+--degree-valid "${DATA_DIR}/Degree_valid_antithetical_50_400.pkl"  \
 --task ${TASK} \
---batch-size 512 \
+--batch-size 1024 \
 --print-freq 50 \
 --additive-margin 0.02 \
 --use-amp \
 --use-self-negative \
---subgraph-size 256 \
+--subgraph-size 512 \
 --finetune-t \
 --finetune-B \
 --B 10e3 \

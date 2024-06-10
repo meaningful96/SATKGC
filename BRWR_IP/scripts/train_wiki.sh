@@ -26,11 +26,11 @@ python3 -u main_LKG.py \
 --lr 3e-5 \
 --train-path "${DATA_DIR}/train.txt.json" \
 --valid-path "${DATA_DIR}/valid.txt.json" \
---train-path-dict "${DATA_DIR}/train_antithetical_50_300.pkl" \
---valid-path-dict "${DATA_DIR}/valid_antithetical_50_300.pkl" \
---shortest-path "${DATA_DIR}/ShortestPath_train.pkl" \
---degree-train "${DATA_DIR}/Degree_train.pkl" \
---degree-valid "${DATA_DIR}/Degree_valid.pkl" \
+--train-path-dict "${DATA_DIR}/train_antithetical_50_200.pkl" \
+--valid-path-dict "${DATA_DIR}/valid_antithetical_50_200.pkl" \
+--shortest-path "${DATA_DIR}/ShortestPath_antithetical_50_200.pkl" \
+--degree-train "${DATA_DIR}/Degree_train_antithetical_50_200.pkl" \
+--degree-valid "${DATA_DIR}/Degree_valid_antithetical_50_200.pkl" \
 --task "${TASK}" \
 --batch-size 1024 \
 --print-freq 50 \
@@ -41,6 +41,7 @@ python3 -u main_LKG.py \
 --finetune-t \
 --finetune-B \
 --B 10e3 \
---epochs 1 \
+--epochs 2 \
 --workers 5 \
+--LKG \
 --max-to-keep 10 "$@"

@@ -52,7 +52,7 @@ parser.add_argument('--degree-valid', default='', type=str, metavar='N',
 
 parser.add_argument('--use-link-graph', action='store_true',
                     help='use neighbors from link graph as context')
-parser.add_argument('--eval-every-n-step', default=5000, type=int,
+parser.add_argument('--eval-every-n-step', default=2500, type=int,
                     help='evaluate every n steps')
 parser.add_argument('--additive-margin', default=0.0, type=float, metavar='N',
                     help='additive margin for InfoNCE loss function')
@@ -60,7 +60,8 @@ parser.add_argument('--finetune-t', action='store_true',
                     help='make temperature as a trainable parameter or not')
 parser.add_argument('--finetune-B', action='store_true',
                     help='make temperature as a trainable parameter or not')
-
+parser.add_argument('--LKG', default=False, action='store_true',
+                    help='For wikidata')
 
 parser.add_argument('--max-num-tokens', default=50, type=int,
                     help='maximum number of tokens')

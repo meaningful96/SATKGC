@@ -104,7 +104,7 @@ class Trainer:
 
         center_count_train = counting_center(train_subgraph_dict)
         center_count_valid = counting_center(valid_subgraph_dict)
-
+        logger.info(f"LKG: {self.args.LKG}")
         for epoch in range(self.args.epochs):
             start_epoch = time.time()
             train_centers_phase = train_centers[num_center_train*epoch:num_center_train*(epoch+1)]
@@ -116,8 +116,6 @@ class Trainer:
             train_subgraphs_all = Making_Subgraph_for_LKG(train_subgraph_dict, train_centers_phase, center_count_train, args.subgraph_size)
             valid_subgraphs_all = Making_Subgraph_for_LKG(valid_subgraph_dict, valid_centers_phase, center_count_valid, args.subgraph_size) 
 
-            # center_count_valid = counting(center_count_valid, valid_centers_phase)
-            # center_count_train = counting(center_count_train, train_centers_phase)
             train_dataset = Custom_Dataset(data=train_subgraphs_all)
             valid_dataset = Custom_Dataset(data=valid_subgraphs_all)
                 
@@ -146,7 +144,12 @@ class Trainer:
 
             # validation
             args.validation = True
-            self._run_eval(epoch=epoch)
+            if args.LKG:
+                args.LKG = False
+                self._run_eval(epoch=epoch)
+                args.LKG = True
+            else:
+                self._run_eval(epoch=epoch)
             args.validation = False
             end_epoch = time.time()
             print("Time_per_Epoch = '{}'".format(datetime.timedelta(seconds = end_epoch - start_epoch)))
@@ -231,6 +234,7 @@ class Trainer:
         count1, count2, count3, count4, count5 = 0, 0, 0, 0, 0
         total_count = 0        
 
+        valid_count = 0
         for i, batch_dict in enumerate(self.train_loader):
             # switch to train mode
             self.model.train()
@@ -286,6 +290,8 @@ class Trainer:
                 progress.display(i)
             if (i + 1) % self.args.eval_every_n_step == 0:
                 args.validation = True
+                if args.task == 'wiki5m_ind' or args.task == 'wiki5m_trans':
+                    args.LKG = True
                 self._run_eval(epoch=epoch, step=i + 1)
                 args.validation = False
 
@@ -295,7 +301,7 @@ class Trainer:
 
     def _setup_training(self):
         if torch.cuda.device_count() > 1:
-            self.model = torch.nn.DataParallel(self.model, device_ids = [1,0,2,3,5,6]).to("cuda:1")
+            self.model = torch.nn.DataParallel(self.model, device_ids = [1,0,2,3,5]).to("cuda:1")
             # loss_backward = mean_tensor(loss_backward).to(logits.device)
         elif torch.cuda.is_available():
             self.model.cuda()

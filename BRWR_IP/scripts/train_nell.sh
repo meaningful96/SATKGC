@@ -15,9 +15,9 @@ if [ -z "$DATA_DIR" ]; then
   DATA_DIR="${DIR}/data/${TASK}"
 fi
 
-python3 -u main_LKG.py \
+python3 -u main_LKG2.py \
 --model-dir "${OUTPUT_DIR}" \
---pretrained-model microsoft/deberta-large \
+--pretrained-model bert-large-uncased \
 --pooling mean \
 --lr 5e-5 \
 --use-link-graph \
@@ -34,11 +34,11 @@ python3 -u main_LKG.py \
 --additive-margin 0.02 \
 --use-amp \
 --use-self-negative \
---subgraph-size 256 \
+--subgraph-size 200 \
 --finetune-t \
 --finetune-B \
 --B 10e3 \
---epochs 20 \
+--epochs 30 \
 --workers 4 \
 --max-to-keep 5 "$@"
 

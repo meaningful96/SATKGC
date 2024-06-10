@@ -515,7 +515,6 @@ def get_degree_dict(subgraph_dict, nxGraph, subgraph_size):
     logger.info("Get DW Dictionary!!")
     s = time.time()
     keys = list(subgraph_dict.keys())
-    logger.info(f"Centers: {len(keys)}")
     degree_dict = defaultdict(list)
     for key in keys:
         subgraph_list = subgraph_dict[key]
@@ -694,6 +693,15 @@ def main(base_dir, dataset, k_steps, num_iter, distribution, phase, subgraph_siz
     data_file = f'{mode}.txt.json'
     data_path = os.path.join(base_dir, dataset, data_file) 
     data = json.load(open(data_path, 'r', encoding='utf-8'))
+    if mode == 'valid':
+        if LKG:
+            train_data_path = os.path.join(base_dir, dataset, 'train.txt.json')
+            data_length = len(json.load(open(train_data_path, 'r', encoding='utf-8')))
+            cnt = data_length // (2500 * subgraph_size * 2) # subgraph_size * 2 == batch_size during training
+            logger.info(f"CNT: {cnt}")
+            phase = cnt * phase + phase
+            logger.info(f'Phase: {phase}')
+
     subgraph_total_dict_path = os.path.join(base_dir, dataset, f"subgraph_total_dict_{mode}_{k_steps}_{num_iter}.pkl")
     if os.path.exists(subgraph_total_dict_path):
         with open(subgraph_total_dict_path, "rb") as file:

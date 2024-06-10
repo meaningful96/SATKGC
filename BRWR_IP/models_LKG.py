@@ -174,8 +174,9 @@ class CustomBertModel(nn.Module, ABC):
             logits = torch.cat([logits, self_neg_logits.unsqueeze(1)], dim=-1)
        
         if args.validation:
-            self.count_centers_valid[center] += 1
-            
+            if not args.LKG:
+                self.count_centers_valid[center] += 1
+
         if not args.validation:
             self.count_centers_train[center] += 1
 
