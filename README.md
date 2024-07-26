@@ -51,31 +51,8 @@ bash scripts/preprocess.sh wiki5m_ind
     - The reciprocal of half of `--k-step` is the restart probability. Therefore, it is extremely rare for the process to reach the maximum step.
 - `--n-iter`
     - This is the number of times BRWR is repeated. When `--k-step` is considered as a single path, a total of `--n-iter` paths are used as a subgraph.
-
-##### WN18RR, FB15k237
-- run `randomwalk.py` (Using multiprocessing)
-- For WN18RR and FB15k-237, only one split needs to be performed for the shortest path weight.
-
-```bash
-python3 randomwalk.py \
---base-dir (SAMCL Path)/data \
---dataset WN18RR \
---k-step 50 \
---n-iter  250 \
---num-cpu 30 \
---distribution antithetical \
---mode train 
-
-# dataset: WN18RR, FB15k237
-# mode: train, valid
-# best: `k-step` =50, `n-iter` = 250 ~ 300 
-```
-
-
-
-##### Wikidata5M
-- run `LKG_randomwalk.py` (Single core only)
-
+- run `LKG_randomwalk.py`
+  
 ```bash
 python3 LKG_randomwalk.py \
 --base-dir (SAMCL Path)/data \
@@ -87,51 +64,9 @@ python3 LKG_randomwalk.py \
 --subgraph-size 512 \
 --mode train
 
-
-# dataset: wiki5m_ind, wiki5m_trans
+# dataset: WN18RR, FB15k237, NELL-995, wiki5m_ind, wiki5m_trans
 # mode: train, valid
 ```
-
-
-
-#### Making dictionary for SPW and DW
-- SPW: Shortest Path Weight
-- DW: Degree Weight
-
-##### WN18RR, FB15k237
-- run `weights_allpair` 
-- `weights_allpair` is for small scale KG (e.g., WN18RR. FB15k237, YAGO3-10)
-```bash
-python3 weights_allpair.py \
---base-dir (SAMCL Path)/data \
---dataset WN18RR \
---num-cpu 30
-```
-
-##### Wikidata5M
-- run `weights_single.py`
-- It's for large scale KG
-
-```bash
-# wiki5m_ind
-python3 weights_single.py \
---base-dir (SAMCL Path)/data \
---dataset wiki5m_ind \
---num-cpu 10 \
---k-step 60 \
---n-iter 300 \
---distribution antithetical
-
-# wiki5m_trans
-python3 weights_single.py \
---base-dir (SAMCL Path)/data \
---dataset wiki5m_trans \
---num-cpu 10 \
---k-step 60 \
---n-iter 300 \
---distribution antithetical
-```
-
 
 
 ### MCMC
@@ -148,8 +83,6 @@ bash ./scripts/download_wikidata5m.sh
 bash scripts/preprocess.sh wiki5m_trans
 bash scripts/preprocess.sh wiki5m_ind
 ```
-
-
 
 ## Step 3) Training(BRWR, MCMC)
 #### WN18RR
