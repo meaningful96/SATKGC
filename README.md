@@ -36,10 +36,10 @@ cd MCMC
 ### BRWR
 #### Make `json` file from raw data
 ```bash
-## WN18RR, NELL-995, FB15k-237
+## WN18RR, FB15k-237, NELL-995
 bash scripts/preprocess.sh WN18RR
-bash scripts/preprocess.sh NELL-995
 bash scripts/preprocess.sh FB15k237
+python3 preprocess_nell.py NELL-995
 
 ## Wikidata5M needs to download at first
 bash ./scripts/download_wikidata5m.sh
@@ -78,9 +78,8 @@ python3 LKG_randomwalk.py \
 ### MCMC
 #### Make `json` file from raw data
 ```bash
-## WN18RR, NELL-995, FB15k-237
+## WN18RR, FB15k-237
 bash scripts/preprocess.sh WN18RR
-bash scripts/preprocess.sh NELL-995
 bash scripts/preprocess.sh FB15k237
 
 ## Wikidata5M needs to download at first
@@ -97,14 +96,14 @@ bash scripts/preprocess.sh wiki5m_ind
 OUTPUT_DIR=./checkpoint/wn18rr/ bash scripts/train_wn.sh
 ```
 
-#### NELL-995
-```bash
-OUTPUT_DIR=./checkpoint/nell995/ bash scripts/train_nell.sh
-```
-
 #### FB15k237
 ```bash
 OUTPUT_DIR=./checkpoint/fb15k237/ bash scripts/train_fb.sh
+```
+
+#### NELL-995
+```bash
+OUTPUT_DIR=./checkpoint/nell995/ bash scripts/train_nell.sh
 ```
 
 #### Wikidata5M
@@ -124,14 +123,14 @@ OUTPUT_DIR=./checkpoint/wiki5m_trans/ bash scripts/train_wiki.sh wiki5m_trans
 bash scripts/eval.sh ./checkpoint/wn18rr/model_last.mdl WN18RR
 ```
 
-#### NELL-995
-```bash
-bash scripts/eval.sh ./checkpoint/nell995/model_last.mdl NELL-995
-```
-
 #### FB15k237
 ```bash
 bash scripts/eval.sh ./checkpoint/fb15k237/model_last.mdl FB15k237
+```
+
+#### NELL-995
+```bash
+bash scripts/eval.sh ./checkpoint/nell995/model_last.mdl NELL-995
 ```
 
 #### Wikidata5M
