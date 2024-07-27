@@ -31,10 +31,10 @@ cd MCMC
 ### BRWR
 #### Make `json` file from raw data
 ```bash
-## WN18RR, FB15k-237, NELL-995
+## WN18RR, NELL-995, FB15k-237
 bash scripts/preprocess.sh WN18RR
-bash scripts/preprocess.sh FB15k237
 bash scripts/preprocess.sh NELL-995
+bash scripts/preprocess.sh FB15k237
 
 ## Wikidata5M needs to download at first
 bash ./scripts/download_wikidata5m.sh
@@ -73,10 +73,10 @@ python3 LKG_randomwalk.py \
 ### MCMC
 #### Make `json` file from raw data
 ```bash
-## WN18RR, FB15k-237, NELL-995
+## WN18RR, NELL-995, FB15k-237
 bash scripts/preprocess.sh WN18RR
-bash scripts/preprocess.sh FB15k237
 bash scripts/preprocess.sh NELL-995
+bash scripts/preprocess.sh FB15k237
 
 ## Wikidata5M needs to download at first
 bash ./scripts/download_wikidata5m.sh
@@ -90,6 +90,11 @@ bash scripts/preprocess.sh wiki5m_ind
 #### WN18RR
 ```bash
 OUTPUT_DIR=./checkpoint/wn18rr/ bash scripts/train_wn.sh
+```
+
+#### NELL-995
+```bash
+OUTPUT_DIR=./checkpoint/nell995/ bash scripts/train_nell.sh
 ```
 
 #### FB15k237
