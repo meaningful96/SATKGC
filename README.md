@@ -1,4 +1,9 @@
 # Subgraph-Aware Training for Knowledge Graph Completion(SATKGC) 
+
+<p align="center">
+<img width="1000" alt="1" src="https://github.com/meaningful96/SATKGC/assets/111734605/3ea3f187-7507-426e-8a9c-e4f9d9ce247c">
+</p>
+
 ## Requirements
 - python ≥ 3.9
 - torch == 1.13.1
