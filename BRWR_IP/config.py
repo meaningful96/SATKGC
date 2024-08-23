@@ -35,8 +35,6 @@ parser.add_argument('--use-amp', action='store_true',
                     help='Use amp if available')
 parser.add_argument('--t', default=0.05, type=float,
                     help='temperature parameter')
-
-## added by youmin
 parser.add_argument('--validation', default=False, action='store_true',
                     help='validation')
 parser.add_argument('--subgraph-size', default=16, type=int,
@@ -49,7 +47,6 @@ parser.add_argument('--degree-train', default='', type=str, metavar='N',
                     help='path to store shortest path dict')
 parser.add_argument('--degree-valid', default='', type=str, metavar='N',
                     help='path to store shortest path dict')
-
 parser.add_argument('--use-link-graph', action='store_true',
                     help='use neighbors from link graph as context')
 parser.add_argument('--eval-every-n-step', default=2500, type=int,
@@ -62,7 +59,8 @@ parser.add_argument('--finetune-B', action='store_true',
                     help='make temperature as a trainable parameter or not')
 parser.add_argument('--LKG', default=False, action='store_true',
                     help='For wikidata')
-
+parser.add_argument('--DegW', default=False, action='store_true',
+                    help='Degree Weight Mode')
 parser.add_argument('--max-num-tokens', default=50, type=int,
                     help='maximum number of tokens')
 parser.add_argument('--use-self-negative', action='store_true',
