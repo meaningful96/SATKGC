@@ -11,8 +11,8 @@
 - networkx == 3.2.1
 ```bash
 # Make a virtual space
-conda create -n SAMCL python=3.9 -y
-conda activate SAMCL
+conda create -n SATKGC python=3.9 -y
+conda activate SATKGC
 
 # Install core packages
 pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
@@ -61,7 +61,7 @@ bash scripts/preprocess.sh wiki5m_ind
   
 ```bash
 python3 LKG_randomwalk.py \
---base-dir (SAMCL Path)/data \
+--base-dir (SATKGC Path)/data \
 --k-step 50 \
 --n-iter  300 \
 --dataset wiki5m_ind \
