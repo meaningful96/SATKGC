@@ -1,6 +1,6 @@
 import os
 import json
-
+import random
 from typing import List
 from dataclasses import dataclass
 from collections import deque
@@ -120,6 +120,34 @@ class LinkGraph:
                             return set()
         return set([entity_dict.entity_to_idx(e_id) for e_id in seen_eids])
 
+class LinkGraph_Triple:
+    def __init__(self, train_path: str):
+        logger.info('Start to build link graph from {}'.format(train_path))
+        # id -> set(id)
+        self.graph = {}
+        examples = json.load(open(train_path, 'r', encoding='utf-8'))
+        for ex in examples:
+            head_id, relation, tail_id = ex['head_id'], ex['relation'], ex['tail_id']
+            if head_id not in self.graph:
+                self.graph[head_id] = set()
+            self.graph[head_id].add((head_id, relation, tail_id))
+            if tail_id not in self.graph:
+                self.graph[tail_id] = set()
+            self.graph[tail_id].add((tail_id, f"Inverse {relation}", head_id))
+
+        logger.info('Done build "Head LinkGraph" with {} nodes'.format(len(self.graph)))
+
+    def get_neighbor_triples(self, entity_id: str, max_num: int) -> List[tuple]:
+        if entity_id in self.graph:    
+            neighbor_triples = list(self.graph[entity_id])
+            random.shuffle(neighbor_triples)
+            if len(neighbor_triples) < max_num:
+                return neighbor_triples   
+            else:
+                neighbor_triples = neighbor_triples[:max_num]    
+                return neighbor_triples
+        if not entity_id in self.graph:
+            return []
 
 def reverse_triplet(obj):
     return {

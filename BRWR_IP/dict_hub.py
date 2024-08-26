@@ -3,12 +3,13 @@ import glob
 
 from transformers import AutoTokenizer
 from config import args
-from triplet import TripletDict, EntityDict, LinkGraph
+from triplet import TripletDict, EntityDict, LinkGraph, LinkGraph_Triple
 from logger_config import logger
 
 train_triplet_dict: TripletDict = None
 all_triplet_dict: TripletDict = None
 link_graph: LinkGraph = None
+link_graph_triple: LinkGraph_Triple = None
 entity_dict: EntityDict = None
 tokenizer: AutoTokenizer = None
 
@@ -36,6 +37,10 @@ def _init_link_graph():
     if not link_graph:
         link_graph = LinkGraph(train_path=args.train_path)
 
+def _init_link_graph_triple():
+    global link_graph_triple
+    if not link_graph_triple:
+        link_graph_triple = LinkGraph_Triple(train_path=args.train_path)
 
 def get_entity_dict():
     _init_entity_dict()
@@ -56,6 +61,9 @@ def get_link_graph():
     _init_link_graph()
     return link_graph
 
+def get_link_graph_triple():
+    _init_link_graph_triple()
+    return link_graph_triple
 
 def build_tokenizer(args):
     global tokenizer

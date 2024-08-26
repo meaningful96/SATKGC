@@ -65,7 +65,8 @@ class CustomBertModel(nn.Module, ABC):
         self.hr_bert = AutoModel.from_pretrained(args.pretrained_model)
         self.tail_bert = deepcopy(self.hr_bert)
         
-        self.st_dict = load_pkl(args.shortest_path)
+        self.st_train = load_pkl(args.shortest_train)
+        self.st_valid = load_pkl(args.shortest_valid)
         self.degree_train, self.degree_valid = load_pkl(args.degree_train), load_pkl(args.degree_valid)
         self.count_centers_train, self.count_centers_valid = counting_dict(self.degree_train), counting_dict(self.degree_valid)
 
@@ -121,46 +122,37 @@ class CustomBertModel(nn.Module, ABC):
             degree_list = self.degree_train[center]
             dh_list, dt_list = degree_list[index][0], degree_list[index][1]
             
-            assert len(dh_list) == logits.size(0)
-            assert len(dt_list) == logits.size(0)
-
-            dh, dt = torch.tensor(dh_list).to(hr_vector.device), torch.tensor(dt_list).to(hr_vector.device)
-            dh = dh.log()
-            dt = dt.log()
-
-            del degree_list
-            del dh_list
-            del dt_list
-         
         if args.validation:
             index = self.count_centers_valid[center]
             degree_list = self.degree_valid[center]
             dh_list, dt_list = degree_list[index][0], degree_list[index][1]
             
-            assert len(dh_list) == logits.size(0)
-            assert len(dt_list) == logits.size(0)
+        assert len(dh_list) == logits.size(0)
+        assert len(dt_list) == logits.size(0)
 
-            dh, dt = torch.tensor(dh_list).to(hr_vector.device), torch.tensor(dt_list).to(hr_vector.device)
-            dh = dh.log()
-            dt = dt.log()
+        dh, dt = torch.tensor(dh_list).to(hr_vector.device), torch.tensor(dt_list).to(hr_vector.device)
+        dh = dh.log()
+        dt = dt.log()
 
-            del degree_list
-            del dh_list
-            del dt_list
-
-        
+        del degree_list
+        del dh_list
+        del dt_list
+    
         if self.training:
             logits -= torch.zeros(logits.size()).fill_diagonal_(self.add_margin).to(hr_vector.device)        
-        
+
         if not args.validation:
-            st_list = self.st_dict[center][index]
-            st_vector = torch.tensor(st_list).reshape(logits.size(0), 1)
-            st_weight = st_vector.mm(st_vector.t()).to(hr_vector.device)
-            st_weight.fill_diagonal_(1)
-            st_weight = st_weight.float()
-            st_weight *= self.log_inv_b.exp()
-            logits += st_weight
-        
+            st_list = self.st_train[center][index]
+        if args.validation:
+            st_list = self.st_valid[center][index]
+
+        st_vector = torch.tensor(st_list).reshape(logits.size(0), 1)
+        st_weight = st_vector.mm(st_vector.t()).to(hr_vector.device)
+        st_weight.fill_diagonal_(1)
+        st_weight = st_weight.float()
+        st_weight *= self.log_inv_b.exp()
+        logits += st_weight
+
         logits *= self.log_inv_t.exp()
         triplet_mask = batch_dict.get('triplet_mask', None).to(hr_vector.device)
         if triplet_mask is not None:
@@ -168,7 +160,9 @@ class CustomBertModel(nn.Module, ABC):
 
         if self.args.use_self_negative and self.training:
             head_vector = output_dict['head_vector']
+
             self_neg_logits = (torch.sum(hr_vector * head_vector, dim=1) * self.log_inv_t.exp()).to(hr_vector.device)
+            self_neg_logits = (torch.sum(hr_vector * head_vector, dim=1)).to(hr_vector.device)            
             self_negative_mask = batch_dict['self_negative_mask'].to(hr_vector.device)
             self_neg_logits.masked_fill_(~self_negative_mask, -1e4)
             logits = torch.cat([logits, self_neg_logits.unsqueeze(1)], dim=-1)

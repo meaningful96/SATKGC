@@ -105,6 +105,7 @@ class Trainer:
         center_count_train = counting_center(train_subgraph_dict)
         center_count_valid = counting_center(valid_subgraph_dict)
         logger.info(f"LKG: {self.args.LKG}")
+        logger.info(f"DegW: {args.DegW}")
         for epoch in range(self.args.epochs):
             start_epoch = time.time()
             train_centers_phase = train_centers[num_center_train*epoch:num_center_train*(epoch+1)]
@@ -197,9 +198,12 @@ class Trainer:
             outputs = ModelOutput(**outputs)
             
             logits, labels = outputs.logits, outputs.labels
-            degree_tail = outputs.dt
+            if args.DegW == False:
+                dw = outputs.dt
+            else:
+                dw = outputs.dh
 
-            loss = self.criterion(logits, labels) * degree_tail
+            loss = self.criterion(logits, labels) * dw
 
             # tail degree
             loss = mean_tensor(loss).to(logits.device)
@@ -252,16 +256,22 @@ class Trainer:
             outputs = get_model_obj(self.model).compute_logits(output_dict=outputs, batch_dict=batch_dict)
             outputs = ModelOutput(**outputs)
             logits, labels = outputs.logits, outputs.labels
+    
+            if args.DegW == False:
+                dw1, dw2 = outputs.dt, outputs.dh
+            else:
+                dw1, dw2 = outputs.dh, outputs.dt    
+    
             degree_head = outputs.dh
             degree_tail = outputs.dt
           
             assert logits.size(0) == args.batch_size
             # head + relation -> tail
-            loss_forward = self.criterion(logits, labels) * degree_tail
+            loss_forward = self.criterion(logits, labels) * dw1
             loss = mean_tensor(loss_forward)
             
             # tail -> head + relation
-            loss_backward = self.criterion(logits[:, :args.batch_size].t(), labels) * degree_head
+            loss_backward = self.criterion(logits[:, :args.batch_size].t(), labels) * dw2
             loss += mean_tensor(loss_backward)
 
             acc1, acc3 = accuracy(logits, labels, topk=(1, 3))
@@ -301,7 +311,7 @@ class Trainer:
 
     def _setup_training(self):
         if torch.cuda.device_count() > 1:
-            self.model = torch.nn.DataParallel(self.model, device_ids = [1,0,2,3,5]).to("cuda:1")
+            self.model = torch.nn.DataParallel(self.model, device_ids = [0,1,2,3,5,6]).to("cuda:0")
             # loss_backward = mean_tensor(loss_backward).to(logits.device)
         elif torch.cuda.is_available():
             self.model.cuda()

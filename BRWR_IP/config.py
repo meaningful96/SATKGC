@@ -39,9 +39,13 @@ parser.add_argument('--validation', default=False, action='store_true',
                     help='validation')
 parser.add_argument('--subgraph-size', default=16, type=int,
                     help='Subgraph Size')
-parser.add_argument('--B', default=10e4, type=float, metavar='N',
+parser.add_argument('--B', default=1.001, type=float, metavar='N',
                     help='learnable parameter for shortest path weight')
-parser.add_argument('--shortest-path', default='', type=str, metavar='N',
+parser.add_argument('--a', default=1e-1, type=float, metavar='N',
+                    help='learnable parameter for inner degree weight')
+parser.add_argument('--shortest-valid', default='', type=str, metavar='N',
+                    help='path to store shortest path dict')
+parser.add_argument('--shortest-valid', default='', type=str, metavar='N',
                     help='path to store shortest path dict')
 parser.add_argument('--degree-train', default='', type=str, metavar='N',
                     help='path to store shortest path dict')
@@ -57,9 +61,12 @@ parser.add_argument('--finetune-t', action='store_true',
                     help='make temperature as a trainable parameter or not')
 parser.add_argument('--finetune-B', action='store_true',
                     help='make temperature as a trainable parameter or not')
+parser.add_argument('--finetune-a', action='store_true',
+        help='make temperature as a trainable parameter or not')
+
 parser.add_argument('--LKG', default=False, action='store_true',
                     help='For wikidata')
-parser.add_argument('--DegW', default=False, action='store_true',
+parser.add_argument('--DegW', default=True, action='store_true',
                     help='Degree Weight Mode')
 parser.add_argument('--max-num-tokens', default=50, type=int,
                     help='maximum number of tokens')

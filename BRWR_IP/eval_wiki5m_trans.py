@@ -54,6 +54,7 @@ def _load_entity_embeddings():
 
 def predict_by_split():
     args.batch_size = max(args.batch_size, torch.cuda.device_count() * 1024)
+    logger.info("GPU Count: {}".format(torch.cuda.device_count()))
     assert os.path.exists(args.valid_path)
     assert os.path.exists(args.train_path)
     assert os.path.exists(args.eval_model_path)

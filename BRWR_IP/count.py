@@ -1,5 +1,5 @@
 import pickle
-path = './data/FB15k237/train_antithetical_50_400.pkl'
+path = './data/WN18RR/train_antithetical_20_5.pkl'
 duple = []
 
 def load_pkl(path):
@@ -31,4 +31,4 @@ for center in centers:
     duple.append(len(hr_set))
 
 print("Duplications!!")
-print(3072 - sum(duple)/len(duple))
+print(512 - sum(duple)/len(duple))

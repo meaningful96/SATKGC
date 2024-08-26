@@ -672,7 +672,14 @@ def get_shortest_distance_LKG(sKG, center, subgraph_dict, subgraph_size, queue=N
 
     return res, center
 
-
+def build_TVGraph(nxGraph, data):
+    for ex in data:
+        h, r, t = ex['head_id'], ex['relation'], ex['tail_id']
+        nxGraph.add_node(h)
+        nxGraph.add_node(t)
+        nxGraph.add_edge(h, t, relation=r)
+    logger.info('Done building Train + Valid Graph for extracting SPW of Valid Set!!')
+    return nxGraph
 
 def main(base_dir, dataset, k_steps, num_iter, distribution, phase, subgraph_size, mode, LKG):
     ## Step 1. Define the all paths
@@ -715,7 +722,7 @@ def main(base_dir, dataset, k_steps, num_iter, distribution, phase, subgraph_siz
     subgraph_out = os.path.join(base_dir, dataset, f"{mode}_{distribution}_{k_steps}_{num_iter}.pkl")
     appear_out = os.path.join(base_dir, dataset, f"appearance_{mode}_{distribution}_{k_steps}_{num_iter}.pkl")
     degree_out = os.path.join(base_dir, dataset, f"Degree_{mode}_{distribution}_{k_steps}_{num_iter}.pkl")
-    shortest_out = os.path.join(base_dir, dataset, f"ShortestPath_{distribution}_{k_steps}_{num_iter}.pkl")
+    shortest_out = os.path.join(base_dir, dataset, f"ShortestPath_{mode}_{distribution}_{k_steps}_{num_iter}.pkl")
 
     ## Step 2. BRWR for extracting subgraphs !!
     appearance = build_appearance(data)
@@ -754,7 +761,6 @@ def main(base_dir, dataset, k_steps, num_iter, distribution, phase, subgraph_siz
     subgraph_dict = result[0]
             
     del obj
-    del data
     del result
     del appearance
     del nxDiGraph
@@ -776,6 +782,17 @@ def main(base_dir, dataset, k_steps, num_iter, distribution, phase, subgraph_siz
         elif LKG:
             del nxGraph
             spw_dict = get_spw_dict_LKG(subgraph_dict, total_sKG, subgraph_size)
+
+    if mode == 'valid':
+        nxGraph = build_TVGraph(nxGraph, data)
+        del data
+
+        if not LKG:
+            spw_dict = get_spw_dict(subgraph_dict, nxGraph, subgraph_size)
+        elif LKG:
+            del nxGraph
+            spw_dict = get_spw_dict_LKG(subgraph_dict, total_sKG, subgraph_size)
+
 
         with open(shortest_out, 'wb') as f:
             pickle.dump(spw_dict, f)

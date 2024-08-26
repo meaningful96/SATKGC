@@ -25,7 +25,8 @@ python3 -u main_LKG.py \
 --valid-path "${DATA_DIR}/valid.txt.json" \
 --train-path-dict "${DATA_DIR}/train_antithetical_50_400.pkl" \
 --valid-path-dict "${DATA_DIR}/valid_antithetical_50_400.pkl" \
---shortest-path "${DATA_DIR}/ShortestPath_antithetical_50_400.pkl" \
+--shortest-train "${DATA_DIR}/ShortestPath_train_antithetical_50_400.pkl" \
+--shortest-valid "${DATA_DIR}/ShortestPath_valid_antithetical_50_400.pkl" \
 --degree-train "${DATA_DIR}/Degree_train_antithetical_50_400.pkl" \
 --degree-valid "${DATA_DIR}/Degree_valid_antithetical_50_400.pkl"  \
 --task ${TASK} \
@@ -38,7 +39,7 @@ python3 -u main_LKG.py \
 --finetune-t \
 --finetune-B \
 --B 10e3 \
---epochs 20 \
+--epochs 50 \
 --workers 4 \
---max-to-keep 5 "$@"
+--max-to-keep 3 "$@"
 

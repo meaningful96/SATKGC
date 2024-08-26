@@ -8,14 +8,14 @@ from typing import Optional, List
 from config import args
 from triplet import reverse_triplet
 from triplet_mask import construct_mask, construct_self_negative_mask
-from dict_hub import get_entity_dict, get_link_graph, get_tokenizer
+from dict_hub import get_entity_dict, get_link_graph, get_link_graph_triple, get_tokenizer
 from logger_config import logger
 
 entity_dict = get_entity_dict()
 if args.use_link_graph:
     # make the lazy data loading happen
     get_link_graph()
-
+    get_link_graph_triple()
 
 def _custom_tokenize(text: str,
                      text_pair: Optional[str] = None) -> dict:
@@ -55,6 +55,29 @@ def get_neighbor_desc(head_id: str, tail_id: str = None) -> str:
     entities = [_parse_entity_name(entity) for entity in entities]
     return ' '.join(entities)
 
+def get_neighbor_triple(head_id:str, tail_id:str):
+    if head_id in get_link_graph_triple():
+        neighbors = get_link_graph_triple().get_neighbor_triples(head_id, 10)
+        processed_triples = []
+        for h_id, relation, t_id in neighbors:
+            # Convert head_id and tail_id to their entity names
+            head_name = entity_dict.get_entity_by_id(h_id).entity
+            tail_name = entity_dict.get_entity_by_id(t_id).entity
+        
+            # Parse the entity names into natural language
+            head_name = _parse_entity_name(head_name)
+            tail_name = _parse_entity_name(tail_name)
+        
+            # Create the processed triple and add it to the list
+            processed_triples.append(f"{head_name} {relation} {tail_name}")
+        del neighbors
+        final_text = "[SEP] ".join(processed_triples)
+        del processed_triples
+    else:
+        final_text = " "
+
+    return final_text
+       
 
 class Example:
 
@@ -83,33 +106,24 @@ class Example:
     def tail(self):
         return entity_dict.get_entity_by_id(self.tail_id).entity
 
+    @property
+    def context(self):
+        return get_neighbor_triple(self.head_id, self.tail_id)
+
     def vectorize(self) -> dict:
         head_desc, tail_desc = self.head_desc, self.tail_desc
-        if args.use_link_graph:
-            if len(head_desc.split()) < 20:
-                head_desc += ' ' + get_neighbor_desc(head_id=self.head_id, tail_id=self.tail_id)
-            if len(tail_desc.split()) < 20:
-                tail_desc += ' ' + get_neighbor_desc(head_id=self.tail_id, tail_id=self.head_id)
+        context = self.context
+        head_text = f"{_parse_entity_name(self.head)} {self.relation} | {_parse_entity_name(self.head)}: {head_desc} | context: {context}"
 
-        head_word = _parse_entity_name(self.head)
-        head_text = _concat_name_desc(head_word, head_desc)
-        hr_encoded_inputs = _custom_tokenize(text=head_text,
-                                             text_pair=self.relation)
         
-        # head_word = _parse_entity_name(self.head)
-        # head_text = f"{head_word} {self.relation}"
-        # h_desc = f"{head_desc}"
-        # hr_encoded_inputs = _custom_tokenize(text=head_text,
-        #                                      text_pair=h_desc)
-        # head_encoded_inputs = _custom_tokenize(text=_concat_name_desc(head_word, h_desc))   
-        
+        hr_encoded_inputs = _custom_tokenize(text=head_text)
         head_encoded_inputs = _custom_tokenize(text=head_text)
-        tail_word = _parse_entity_name(self.tail)
-        # t_desc = f"{self.tail}: {tail_desc}"
-        tail_encoded_inputs = _custom_tokenize(text=_concat_name_desc(tail_word, tail_desc))
-        
-        triple = (self.head_id, self.relation, self.tail_id)
 
+        tail_word = _parse_entity_name(self.tail)
+        # tail_encoded_inputs = _custom_tokenize(text=_concat_name_desc(tail_word, tail_desc))
+        tail_text = f"{tail_word} | {tail_word}: tail_desc"
+
+        triple = (self.head_id, self.relation, self.tail_id)
         return {'hr_token_ids': hr_encoded_inputs['input_ids'],
                 'hr_token_type_ids': hr_encoded_inputs['token_type_ids'],
                 'tail_token_ids': tail_encoded_inputs['input_ids'],
@@ -206,7 +220,6 @@ def collate(batch_data: List[dict]) -> dict:
     tail_token_type_ids = to_indices_and_mask(
         [torch.LongTensor(ex['tail_token_type_ids']) for ex in batch_data],
         need_mask=False)
-    
     
     head_token_ids, head_mask = to_indices_and_mask(
         [torch.LongTensor(ex['head_token_ids']) for ex in batch_data],

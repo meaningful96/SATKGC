@@ -287,9 +287,11 @@ def dump_all_entities(examples, out_path, id2text: dict):
 
     json.dump(list(id2entity.values()), open(out_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=4)
 
+
+
+
+
 umls_id2ent = {}
-
-
 
 def _load_umls_texts(path: str):
     global umls_id2ent
@@ -315,7 +317,6 @@ def _process_line_umls(line: str) -> dict:
                'tail_id': tail_id,
                'tail': tail}
     return example
-
 
 def preprocess_umls(path):
     if not umls_id2ent:
