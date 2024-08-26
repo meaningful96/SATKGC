@@ -151,3 +151,4 @@ bash scripts/eval_wiki5m_trans.sh ./checkpoint/wiki5m_trans/model_last.mdl
 # Acknowledgement
 This code is based on [SimKGC](https://arxiv.org/abs/2203.02167).  
 
+

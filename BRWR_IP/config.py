@@ -43,7 +43,7 @@ parser.add_argument('--B', default=1.001, type=float, metavar='N',
                     help='learnable parameter for shortest path weight')
 parser.add_argument('--a', default=1e-1, type=float, metavar='N',
                     help='learnable parameter for inner degree weight')
-parser.add_argument('--shortest-valid', default='', type=str, metavar='N',
+parser.add_argument('--shortest-train', default='', type=str, metavar='N',
                     help='path to store shortest path dict')
 parser.add_argument('--shortest-valid', default='', type=str, metavar='N',
                     help='path to store shortest path dict')

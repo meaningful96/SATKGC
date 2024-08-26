@@ -794,8 +794,8 @@ def main(base_dir, dataset, k_steps, num_iter, distribution, phase, subgraph_siz
             spw_dict = get_spw_dict_LKG(subgraph_dict, total_sKG, subgraph_size)
 
 
-        with open(shortest_out, 'wb') as f:
-            pickle.dump(spw_dict, f)
+    with open(shortest_out, 'wb') as f:
+        pickle.dump(spw_dict, f)
     logger.info("Done building SPW Dictionary: {}".format(shortest_out))
     logger.info("Done building BRWR Subgraph Dictionary: {}".format(subgraph_out))
     logger.info("Done building DW Dictioanry: {}".format(degree_out))
