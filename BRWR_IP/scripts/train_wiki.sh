@@ -41,7 +41,6 @@ python3 -u main_LKG.py \
 --subgraph-size 512 \
 --finetune-t \
 --finetune-B \
---B 10e3 \
 --epochs 2 \
 --workers 5 \
 --LKG \

@@ -38,8 +38,7 @@ python3 -u main_LKG.py \
 --subgraph-size 512 \
 --finetune-t \
 --finetune-B \
---B 10e3 \
 --epochs 50 \
 --workers 4 \
---max-to-keep 3 "$@"
+--max-to-keep 5 "$@"
 
