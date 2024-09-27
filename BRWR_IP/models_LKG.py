@@ -64,9 +64,7 @@ class CustomBertModel(nn.Module, ABC):
 
         self.hr_bert = AutoModel.from_pretrained(args.pretrained_model)
         self.tail_bert = deepcopy(self.hr_bert)
-        
         self.st_train = load_pkl(args.shortest_train)
-        self.st_valid = load_pkl(args.shortest_valid)
         self.degree_train, self.degree_valid = load_pkl(args.degree_train), load_pkl(args.degree_valid)
         self.count_centers_train, self.count_centers_valid = counting_dict(self.degree_train), counting_dict(self.degree_valid)
 
@@ -143,19 +141,11 @@ class CustomBertModel(nn.Module, ABC):
 
         if not args.validation:
             st_list = self.st_train[center][index]
-        if args.validation:
-            st_list = self.st_valid[center][index]
-
-        st_vector = torch.tensor(st_list).reshape(logits.size(0), 1)
-        st_weight = st_vector.mm(st_vector.t()).to(hr_vector.device)
-        st_weight.fill_diagonal_(0)
-        print(st_weight)
-        st_weight = L2_norm(st_weight.float())
-        st_weight *= self.log_inv_b.exp()
-        st_weight = st_weight.round(decimals=4)
-        logits += st_weight
-        print(st_weight)
-        breakpoint()
+            st_vector = torch.tensor(st_list).reshape(logits.size(0), 1)
+            st_weight = st_vector.mm(st_vector.t()).to(hr_vector.device)
+            st_weight.fill_diagonal_(0)
+            st_weight *= self.log_inv_b.exp()
+            logits += st_weight
 
         logits *= self.log_inv_t.exp()
         triplet_mask = batch_dict.get('triplet_mask', None).to(hr_vector.device)
@@ -164,9 +154,8 @@ class CustomBertModel(nn.Module, ABC):
 
         if self.args.use_self_negative and self.training:
             head_vector = output_dict['head_vector']
-
             self_neg_logits = (torch.sum(hr_vector * head_vector, dim=1) * self.log_inv_t.exp()).to(hr_vector.device)
-            self_neg_logits = (torch.sum(hr_vector * head_vector, dim=1)).to(hr_vector.device)            
+            # self_neg_logits = (torch.sum(hr_vector * head_vector, dim=1)).to(hr_vector.device)            
             self_negative_mask = batch_dict['self_negative_mask'].to(hr_vector.device)
             self_neg_logits.masked_fill_(~self_negative_mask, -1e4)
             logits = torch.cat([logits, self_neg_logits.unsqueeze(1)], dim=-1)

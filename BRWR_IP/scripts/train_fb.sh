@@ -23,22 +23,20 @@ python3 -u main_LKG.py \
 --use-link-graph \
 --train-path "$DATA_DIR/train.txt.json" \
 --valid-path "$DATA_DIR/valid.txt.json" \
---train-path-dict "$DATA_DIR/train_antithetical_50_300.pkl" \
---valid-path-dict "$DATA_DIR/valid_antithetical_50_300.pkl" \
---shortest-train "$DATA_DIR/ShortestPath_train_antithetical_50_300.pkl" \
---shortest-valid "$DATA_DIR/ShortestPath_valid_antithetical_50_300.pkl" \
---degree-train "${DATA_DIR}/Degree_train_antithetical_50_300.pkl" \
---degree-valid "${DATA_DIR}/Degree_valid_antithetical_50_300.pkl" \
+--train-path-dict "$DATA_DIR/train_antithetical_50_302.pkl" \
+--valid-path-dict "$DATA_DIR/valid_antithetical_50_302.pkl" \
+--shortest-train "$DATA_DIR/ShortestPath_train_antithetical_50_302.pkl" \
+--degree-train "${DATA_DIR}/Degree_train_antithetical_50_302.pkl" \
+--degree-valid "${DATA_DIR}/Degree_valid_antithetical_50_302.pkl" \
 --task ${TASK} \
---max-num-tokens 58 \
 --batch-size 3072 \
---print-freq 50 \
+--print-freq 20 \
 --additive-margin 0.02 \
 --use-amp \
 --use-self-negative \
 --subgraph-size 1536 \
 --finetune-t \
 --finetune-B \
---epochs 20 \
+--epochs 30 \
 --workers 4 \
 --max-to-keep 5 "$@"

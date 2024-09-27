@@ -96,18 +96,10 @@ class Example:
         hr_encoded_inputs = _custom_tokenize(text=head_text,
                                              text_pair=self.relation)
         
-        # head_word = _parse_entity_name(self.head)
-        # head_text = f"{head_word} {self.relation}"
-        # h_desc = f"{head_desc}"
-        # hr_encoded_inputs = _custom_tokenize(text=head_text,
-        #                                      text_pair=h_desc)
-        # head_encoded_inputs = _custom_tokenize(text=_concat_name_desc(head_word, h_desc))   
-        
         head_encoded_inputs = _custom_tokenize(text=head_text)
         tail_word = _parse_entity_name(self.tail)
-        # t_desc = f"{self.tail}: {tail_desc}"
         tail_encoded_inputs = _custom_tokenize(text=_concat_name_desc(tail_word, tail_desc))
-        
+
         triple = (self.head_id, self.relation, self.tail_id)
 
         return {'hr_token_ids': hr_encoded_inputs['input_ids'],

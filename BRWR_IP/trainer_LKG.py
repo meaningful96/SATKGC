@@ -311,8 +311,7 @@ class Trainer:
 
     def _setup_training(self):
         if torch.cuda.device_count() > 1:
-            self.model = torch.nn.DataParallel(self.model, device_ids = [0,1,2,3,5,6]).to("cuda:0")
-            # loss_backward = mean_tensor(loss_backward).to(logits.device)
+            self.model = torch.nn.DataParallel(self.model, device_ids = [0,1,2,3,4,5]).to("cuda:0")
         elif torch.cuda.is_available():
             self.model.cuda()
         else:
