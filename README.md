@@ -60,7 +60,7 @@ bash scripts/preprocess.sh wiki5m_ind
   
 ```bash
 python3 LKG_randomwalk.py \
---base-dir (SATKGC Path)/data \
+--base-dir ./data \
 --k-step 50 \
 --n-iter  300 \
 --dataset wiki5m_ind \
