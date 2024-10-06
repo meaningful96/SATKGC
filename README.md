@@ -57,15 +57,20 @@ bash scripts/preprocess.sh wiki5m_ind
 - `--n-iter`
     - This is the number of times BRWR is repeated. When `--k-step` is considered as a single path, a total of `--n-iter` paths are used as a subgraph.
 - run `LKG_randomwalk.py`
+- Best Option
+    - **WN18RR**: `--k-stet`=50, `--n-iter`=300, `--phase`=50, `--subgraph-size`=768 (the batch size is $768 \times 2 = 1536$.)
+    - **FB15k237**: `--k-stet`=50, `--n-iter`=300, `--phase`=30, `--subgraph-size`=1536 (the batch size is $1536 \times 2 = 3072$.)
+    - **Wikidata5M**: `--k-stet`=50, `--n-iter`=200, `--phase`=2, `--subgraph-size`=768 (the batch size is $768 \times 2 = 1536$.)
+ 
   
 ```bash
 python3 LKG_randomwalk.py \
 --base-dir ./data \
 --k-step 50 \
 --n-iter  300 \
---dataset wiki5m_ind \
+--dataset WN18RR \
 --distribution antithetical \
---phase 1 \
+--phase 50 \
 --subgraph-size 512 \
 --mode train
 
