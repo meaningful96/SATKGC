@@ -117,6 +117,8 @@ OUTPUT_DIR=./checkpoint/wiki5m_trans/ bash scripts/train_wiki.sh wiki5m_trans
 
 
 ## Step 4) Inference
+Basically the `model_last` always shows the best performance in all datasets.
+
 #### WN18RR
 ```bash
 bash scripts/eval.sh ./checkpoint/wn18rr/model_last.mdl WN18RR
