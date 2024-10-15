@@ -17,17 +17,17 @@ fi
 
 python3 -u main_LKG.py \
 --model-dir "${OUTPUT_DIR}" \
---pretrained-model bert-base-uncased \
+--pretrained-model microsoft/mpnet-base \
 --pooling mean \
 --lr 1e-5 \
 --use-link-graph \
 --train-path "$DATA_DIR/train.txt.json" \
 --valid-path "$DATA_DIR/valid.txt.json" \
---train-path-dict "$DATA_DIR/train_antithetical_50_302.pkl" \
---valid-path-dict "$DATA_DIR/valid_antithetical_50_302.pkl" \
---shortest-train "$DATA_DIR/ShortestPath_train_antithetical_50_302.pkl" \
---degree-train "${DATA_DIR}/Degree_train_antithetical_50_302.pkl" \
---degree-valid "${DATA_DIR}/Degree_valid_antithetical_50_302.pkl" \
+--train-path-dict "$DATA_DIR/train_antithetical_50_300.pkl" \
+--valid-path-dict "$DATA_DIR/valid_antithetical_50_300.pkl" \
+--shortest-train "$DATA_DIR/ShortestPath_train_antithetical_50_300.pkl" \
+--degree-train "${DATA_DIR}/Degree_train_antithetical_50_300.pkl" \
+--degree-valid "${DATA_DIR}/Degree_valid_antithetical_50_300.pkl" \
 --task ${TASK} \
 --batch-size 3072 \
 --print-freq 20 \
@@ -39,4 +39,4 @@ python3 -u main_LKG.py \
 --finetune-B \
 --epochs 30 \
 --workers 4 \
---max-to-keep 5 "$@"
+--max-to-keep 3 "$@"

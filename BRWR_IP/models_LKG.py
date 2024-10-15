@@ -1,6 +1,5 @@
 from abc import ABC
 from copy import deepcopy
-
 import torch
 import torch.nn as nn
 import networkx as nx
@@ -20,6 +19,8 @@ import pickle
 import math
 import time
 import datetime
+
+
 
 def L2_norm(matrix):
     return F.normalize(matrix, p=2, dim=0)
@@ -114,7 +115,6 @@ class CustomBertModel(nn.Module, ABC):
         labels = torch.arange(batch_size).to(hr_vector.device)
         logits = hr_vector.mm(tail_vector.t())
         center = tuple(batch_dict['batch_triple'][0])   
-
         if not args.validation:
             index = self.count_centers_train[center]
             degree_list = self.degree_train[center]
@@ -155,7 +155,6 @@ class CustomBertModel(nn.Module, ABC):
         if self.args.use_self_negative and self.training:
             head_vector = output_dict['head_vector']
             self_neg_logits = (torch.sum(hr_vector * head_vector, dim=1) * self.log_inv_t.exp()).to(hr_vector.device)
-            # self_neg_logits = (torch.sum(hr_vector * head_vector, dim=1)).to(hr_vector.device)            
             self_negative_mask = batch_dict['self_negative_mask'].to(hr_vector.device)
             self_neg_logits.masked_fill_(~self_negative_mask, -1e4)
             logits = torch.cat([logits, self_neg_logits.unsqueeze(1)], dim=-1)
@@ -185,7 +184,6 @@ class CustomBertModel(nn.Module, ABC):
                                    mask=tail_mask,
                                    token_type_ids=tail_token_type_ids)
         return {'ent_vectors': ent_vectors.detach()}
-
 
 def _pool_output(pooling: str,
                  cls_output: torch.tensor,

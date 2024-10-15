@@ -261,9 +261,6 @@ class Trainer:
                 dw1, dw2 = outputs.dt, outputs.dh
             else:
                 dw1, dw2 = outputs.dh, outputs.dt    
-    
-            degree_head = outputs.dh
-            degree_tail = outputs.dt
           
             assert logits.size(0) == args.batch_size
             # head + relation -> tail

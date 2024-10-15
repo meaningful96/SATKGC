@@ -43,4 +43,4 @@ python3 -u main_LKG.py \
 --epochs 2 \
 --workers 5 \
 --LKG \
---max-to-keep 10 "$@"
+--max-to-keep 4 "$@"

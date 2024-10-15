@@ -15,6 +15,7 @@ if [ -z "$DATA_DIR" ]; then
   DATA_DIR="${DIR}/data/${TASK}"
 fi
 # microsoft/deberta-large
+# microsoft/mpnet-base
 python3 -u main_LKG.py \
 --model-dir "${OUTPUT_DIR}" \
 --pretrained-model microsoft/mpnet-base \
@@ -23,11 +24,11 @@ python3 -u main_LKG.py \
 --use-link-graph \
 --train-path "${DATA_DIR}/train.txt.json" \
 --valid-path "${DATA_DIR}/valid.txt.json" \
---train-path-dict "${DATA_DIR}/train_antithetical_50_301.pkl" \
---valid-path-dict "${DATA_DIR}/valid_antithetical_50_301.pkl" \
---shortest-train "${DATA_DIR}/ShortestPath_train_antithetical_50_301.pkl" \
---degree-train "${DATA_DIR}/Degree_train_antithetical_50_301.pkl" \
---degree-valid "${DATA_DIR}/Degree_valid_antithetical_50_301.pkl"  \
+--train-path-dict "${DATA_DIR}/train_antithetical_50_300.pkl" \
+--valid-path-dict "${DATA_DIR}/valid_antithetical_50_300.pkl" \
+--shortest-train "${DATA_DIR}/ShortestPath_train_antithetical_50_300.pkl" \
+--degree-train "${DATA_DIR}/Degree_train_antithetical_50_300.pkl" \
+--degree-valid "${DATA_DIR}/Degree_valid_antithetical_50_300.pkl"  \
 --task ${TASK} \
 --batch-size 1024 \
 --print-freq 50 \
@@ -39,5 +40,5 @@ python3 -u main_LKG.py \
 --finetune-B \
 --epochs 50 \
 --workers 4 \
---max-to-keep 5 "$@"
+--max-to-keep 3 "$@"
 
