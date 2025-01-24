@@ -1,6 +1,8 @@
 # Subgraph-Aware Training framework for KGC (SATKGC) 
-***Subgraph-Aware Training of Language Models for Knowledge Graph Completion Using Structure-Aware Contrastive Learning*** 
+- Official code repository for WWW 2025 paper "***[Subgraph-Aware Training of Language Models for Knowledge Graph Completion Using Structure-Aware Contrastive Learning](https://arxiv.org/abs/2407.12703)***"
 - **Author**: *Youmin Ko, Hyemin Yang, Taeuk Kim, Hyunjoon Kim*
+
+In this paper, we identify that a key challenge for text-based knowledge graph completion lies in effectively incorporating structural biases and addressing entity imbalance. SATKGC addresses this through subgraph-aware mini-batching, proximity-aware contrastive learning, and frequency-aware training. By combining these techniques, SATKGC leverages both textual and structural information, achieving substantial performance improvements over existing methods on popular benchmark datasets.
 
 <p align="center">
 <img width="1000" alt="1" src="https://github.com/meaningful96/SATKGC/assets/111734605/3ea3f187-7507-426e-8a9c-e4f9d9ce247c">
