@@ -1,3 +1,4 @@
+![image](https://github.com/user-attachments/assets/869ccffb-2efd-4e6b-8e64-84584f0cfb4e)
 # Subgraph-Aware Training framework for KGC (SATKGC) 
 - Official code repository for WWW 2025 paper "***[Subgraph-Aware Training of Language Models for Knowledge Graph Completion Using Structure-Aware Contrastive Learning](https://arxiv.org/abs/2407.12703)***"
 - **Author**: *Youmin Ko, Hyemin Yang, Taeuk Kim, Hyunjoon Kim*
