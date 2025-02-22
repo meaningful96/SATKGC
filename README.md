@@ -144,8 +144,15 @@ bash scripts/eval_wiki5m_trans.sh ./checkpoint/wiki5m_trans/model_last.mdl
 
 # Citation
 ```bash
-
-
+@misc{ko2025subgraphawaretraininglanguagemodels,
+      title={Subgraph-Aware Training of Language Models for Knowledge Graph Completion Using Structure-Aware Contrastive Learning}, 
+      author={Youmin Ko and Hyemin Yang and Taeuk Kim and Hyunjoon Kim},
+      year={2025},
+      eprint={2407.12703},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2407.12703}, 
+}
 ```
 
 # Acknowledgement
