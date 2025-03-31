@@ -21,7 +21,7 @@ fi
 
 python3 -u main_LKG.py \
 --model-dir "${OUTPUT_DIR}" \
---pretrained-model microsoft/mpnet-base \
+--pretrained-model sentence-transformers/all-mpnet-base-v2 \
 --pooling mean \
 --lr 3e-5 \
 --train-path "${DATA_DIR}/train.txt.json" \

@@ -18,7 +18,7 @@ fi
 # microsoft/mpnet-base
 python3 -u main_LKG.py \
 --model-dir "${OUTPUT_DIR}" \
---pretrained-model microsoft/mpnet-base \
+--pretrained-model sentence-transformers/all-mpnet-base-v2 \
 --pooling mean \
 --lr 5e-5 \
 --use-link-graph \
