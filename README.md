@@ -11,7 +11,7 @@ In this paper, we identify that a key challenge for text-based knowledge graph c
 ## Requirements
 - python ≥ 3.9
 - torch == 1.13.1
-- transformer ≥ 4.33.1
+- transformers ≥ 4.33.1
 - networkx == 3.2.1
 ```bash
 # Make a virtual space
