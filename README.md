@@ -20,7 +20,7 @@ conda activate SATKGC
 
 # Install core packages
 pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
-pip install transformer==4.33.1
+pip install transformers==4.33.1
 pip install networkx==3.2.1
 ```
 
