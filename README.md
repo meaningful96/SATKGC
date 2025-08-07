@@ -144,14 +144,22 @@ bash scripts/eval_wiki5m_trans.sh ./checkpoint/wiki5m_trans/model_last.mdl
 
 # Citation
 ```bibtex
-@misc{ko2025subgraphawaretraininglanguagemodels,
-      title={Subgraph-Aware Training of Language Models for Knowledge Graph Completion Using Structure-Aware Contrastive Learning}, 
-      author={Youmin Ko and Hyemin Yang and Taeuk Kim and Hyunjoon Kim},
-      year={2025},
-      eprint={2407.12703},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2407.12703}, 
+@inproceedings{10.1145/3696410.3714946,
+author = {Ko, Youmin and Yang, Hyemin and Kim, Taeuk and Kim, Hyunjoon},
+title = {Subgraph-Aware Training of Language Models for Knowledge Graph Completion Using Structure-Aware Contrastive Learning},
+year = {2025},
+isbn = {9798400712746},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3696410.3714946},
+doi = {10.1145/3696410.3714946},
+abstract = {Fine-tuning pre-trained language models (PLMs) has recently shown a potential to improve knowledge graph completion (KGC). However, most PLM-based methods focus solely on encoding textual information, neglecting the long-tailed nature of knowledge graphs and their various topological structures, e.g., subgraphs, shortest paths, and degrees. We claim that this is a major obstacle to achieving higher accuracy of PLMs for KGC. To this end, we propose a Subgraph-Aware Training framework for KGC (SATKGC) with two ideas: (i) subgraph-aware mini-batching to encourage hard negative sampling and to mitigate an imbalance in the frequency of entity occurrences during training, and (ii) new contrastive learning to focus more on harder in-batch negative triples and harder positive triples in terms of the structural properties of the knowledge graph. To the best of our knowledge, this is the first study to comprehensively incorporate the structural inductive bias of the knowledge graph into fine-tuning PLMs. Extensive experiments on three KGC benchmarks demonstrate the superiority of SATKGC. Our code is available.https://github.com/meaningful96/SATKGC},
+booktitle = {Proceedings of the ACM on Web Conference 2025},
+pages = {72–85},
+numpages = {14},
+keywords = {contrastive learning, hard negative sampling, knowledge graph completion},
+location = {Sydney NSW, Australia},
+series = {WWW '25}
 }
 ```
 
